@@ -48,4 +48,9 @@ class ScanOle(strelka.Scanner):
             self.flags.append("os_error")
         finally:
             # TODO this should be wrapped with another try / catch as the variable assignment is not guaranteed
-            ole.close()
+            try:
+                ole.close()
+            except UnboundLocalError:
+                self.flags.append("ole_scanner_local_variable_not_assigned")
+            except NameError:
+                self.flags.append("ole_scanner_variable_name_err")
